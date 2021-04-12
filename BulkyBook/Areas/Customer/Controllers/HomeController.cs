@@ -7,8 +7,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BulkyBook.Controllers
+// 1. Add Areas
+// 2. Add [Area("Customer")]
+// 3. Change namespace
+namespace BulkyBook.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
