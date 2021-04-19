@@ -6,10 +6,10 @@ using System.Text;
 namespace BulkyBook.DataAccess.Repository.IRepository
 {
     // Repository for Stored procedures
-    public interface ISP_Call
+    public interface ISP_Call : IDisposable
     {
         // using Dapper to pass parameters
-        // Single<T> uses Execute Scalor that returns int or bool (expl - result first column in first row)
+        // Single<T> uses Execute Scalar that returns int or bool (expl - result first column in first row)
         T Single<T>(string procedureName, DynamicParameters param = null);
 
         void Execute(string procedureName, DynamicParameters param = null);
