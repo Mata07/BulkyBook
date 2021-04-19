@@ -25,7 +25,7 @@ namespace BulkyBook.DataAccess.Repository
             {
                 objFromDb.Name = category.Name;
                 // later implement Save in UnitOfWork - to _unitOfWork.Save();
-                _db.SaveChanges();
+                // _db.SaveChanges();
             }            
         }
     }
