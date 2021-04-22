@@ -21,5 +21,10 @@ namespace BulkyBook.Models
         // what role user belongs to, not added to db
         [NotMapped]
         public string Role { get; set; }
+
+        // Navigation prop
+        public int? CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public Company Company { get; set; }
     }
 }
