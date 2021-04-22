@@ -101,16 +101,16 @@
 
                 </div>
             </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    Cover Type
-                </div>
-                <div class="col-8">
-                    @Html.DropDownListFor(m => m.Product.CoverTypeId, Model.CoverTypeList, "-Select a Cover Type",
-                   new { @class = "form-control" })
-                    <span asp-validation-for="Product.CoverTypeId" class="text-danger"></span>
-                </div>
-            </div>
+            @*<div class="form-group row">
+                    <div class="col-4">
+                        Cover Type
+                    </div>
+                    <div class="col-8">
+                        @Html.DropDownListFor(m => m.Product.CoverTypeId, Model.CoverTypeList, "-Select a Cover Type",
+                       new { @class = "form-control" })
+                        <span asp-validation-for="Product.CoverTypeId" class="text-danger"></span>
+                    </div>
+                </div>*@
 
             @*Dropdown with tag helpers example, not in tutorial*@
             <div class="form-group row">
@@ -156,32 +156,41 @@
                 </div>
             </div>
         </div>
+        @if (Model.Product.Id != 0)
+        {
+            <div class="col-3 offset-1 pt-4">
+                <img src="@Model.Product.ImageUrl" style="border-radius:5px; border:1px solid #bbb9b9; width:100%" />
+            </div>
+        }
     </div>
 </form>
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    @*<script src="~/js/customValidation.js"></script> - for decimal , - does not work*@
     <script src="https://cdn.tiny.cloud/1/ui9aefyli93wntotjd7aoqo44gj3cixra2q7f6jcmag6emrg/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
-<script>
+    <script>
 
-    // tinyMCEditor for textarea
-    tinymce.init({
-        selector: 'textarea',
-        plugins: 'lists',
-        menubar: 'file edit format'
-    });
+        // tinyMCEditor for textarea
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'lists',
+            menubar: 'file edit format'
+        });
 
-    // validate image is uploaded
-    function validateInput() {
-        // if no image is uploaded
-        if (document.getElementById("uploadBox").value = "") {
-            swal("Error", "Please select an image", "error");
-            return false;
-        }
-        // if it is
-        return true;
-    }
+        // validate image is uploaded
+        function validateInput() {
+            // if no image is uploaded
+            if (document.getElementById("uploadBox").value == "") {
+                swal("Error", "Please select an image", "error");
+                return false;
+            }
+            // if it is
+            return true;
+        };
 
-</script>
+    </script>
+
+
 }
