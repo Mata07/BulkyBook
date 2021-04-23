@@ -37,7 +37,7 @@ namespace BulkyBook
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
             // change for RoleManager in Section 11
-            services.AddIdentity<IdentityUser,IdentityRole>().AddDefaultTokenProviders()
+            services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
                .AddEntityFrameworkStores<ApplicationDbContext>();
             // Add Email Service
             services.AddSingleton<IEmailSender, EmailSender>();
@@ -51,6 +51,13 @@ namespace BulkyBook
                 options.LoginPath = $"/Identity/Account/Login";
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+
+            // Add Facebook and Google Authentication
+            services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = "520751629309427";
+                options.AppSecret = "de3078e545bf0bd6192e447ebf811a0f";
             });
         }
 
