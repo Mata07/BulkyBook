@@ -120,6 +120,7 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     // Create Roles if they do not exist
+                    // Only for registering first time user!! Delete later!!
                     if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
