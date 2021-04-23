@@ -59,6 +59,11 @@ namespace BulkyBook
                 options.AppId = "520751629309427";
                 options.AppSecret = "de3078e545bf0bd6192e447ebf811a0f";
             });
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "1076333967081-gqffap91fphqhfl15mloq9vap0us9f1u.apps.googleusercontent.com";
+                options.ClientSecret = "pwbP-ud-BNE5Q_CerT1SFZEM";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
