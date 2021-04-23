@@ -159,9 +159,22 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Comp));
                     }
 
-                    // temporary every user will be of Admin role
-                    await _userManager.AddToRoleAsync(user, SD.Role_Admin);
-
+                    // For IndividualUsers type, default type
+                    // If they are registrating without admin
+                    if (user.Role == null)
+                    {
+                        await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
+                    }
+                    else
+                    {
+                        // Company user
+                        if (user.CompanyId > 0)
+                        {
+                            await _userManager.AddToRoleAsync(user, SD.Role_User_Comp);
+                        }
+                        // Admin selects Role
+                        await _userManager.AddToRoleAsync(user, user.Role);
+                    }
 
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -180,8 +193,16 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        if (user.Role == null)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
+                        else
+                        {
+                            //admin is registering a new user, redirect to User controller
+                            return RedirectToAction("Index", "User", new { Area = "Admin" });
+                        }
                     }
                 }
                 foreach (var error in result.Errors)
