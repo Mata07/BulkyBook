@@ -8,7 +8,7 @@ namespace BulkyBook.Models
 {
     public class ShoppingCart
     {
-        public ShoppingCart(int count)
+        public ShoppingCart()
         {
             Count = 1;
         }
