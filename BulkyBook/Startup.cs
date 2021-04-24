@@ -41,6 +41,8 @@ namespace BulkyBook
                .AddEntityFrameworkStores<ApplicationDbContext>();
             // Add Email Service
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<EmailOptions>(Configuration);
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
