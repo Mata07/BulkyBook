@@ -1,7 +1,9 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
 using BulkyBook.Models.ViewModels;
+using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -31,6 +33,21 @@ namespace BulkyBook.Areas.Customer.Controllers
         public IActionResult Index()
         {
             IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");
+
+            // get Id of logged in User
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                // get number of items in ShoppingCart
+                var count = _unitOfWork.ShoppingCart
+                    .GetAll(c => c.ApplicationUserId == claim.Value)
+                    .ToList().Count();
+                // set Session (number of items in ShoppingCart)          
+                HttpContext.Session.SetInt32(SD.ssShoppingCart, count);
+            }
+
+
             return View(productList);
         }
 
@@ -79,6 +96,21 @@ namespace BulkyBook.Areas.Customer.Controllers
                     _unitOfWork.ShoppingCart.Update(cartFromDb);
                 }
                 _unitOfWork.Save();
+
+                // Implement Session
+                // In Session we will store number of items in the shopping cart
+                var count = _unitOfWork.ShoppingCart
+                    .GetAll(c => c.ApplicationUserId == CartObject.ApplicationUserId)
+                    .ToList().Count();
+
+                // add to session
+                // If we want to store an object(List,IEnumerable...) in session use ext method SetObject
+                //HttpContext.Session.SetObject(SD.ssShoppingCart, CartObject);
+                // get Session object
+                //var obj = HttpContext.Session.GetObject<ShoppingCart>(SD.ssShoppingCart);
+
+                // Default built-in session implementation is IntSet32 to get only int type
+                HttpContext.Session.SetInt32(SD.ssShoppingCart, count);
 
                 return RedirectToAction(nameof(Index));
             }
