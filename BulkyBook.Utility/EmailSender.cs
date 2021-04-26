@@ -27,7 +27,8 @@ namespace BulkyBook.Utility
         {
             //var apiKey = Environment.GetEnvironmentVariable("NAME_OF_THE_ENVIRONMENT_VARIABLE_FOR_YOUR_SENDGRID_KEY");
             var client = new SendGridClient(sendGridKey);
-            var from = new EmailAddress("admin@bulky.com", "Bulky Book");
+            // has to the same email address from Single Sender Verification on SendGrid!!!
+            var from = new EmailAddress("mmatisic7@gmail.com", "Bulky Book");
             //var subject = "Sending with SendGrid is Fun";
             var to = new EmailAddress(email, "End User");
             //var plainTextContent = "and easy to do anywhere, even with C#";
