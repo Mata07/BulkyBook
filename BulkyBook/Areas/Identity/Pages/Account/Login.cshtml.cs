@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using BulkyBook.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using BulkyBook.Utility;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace BulkyBook.Areas.Identity.Pages.Account
 {
@@ -137,6 +139,8 @@ namespace BulkyBook.Areas.Identity.Pages.Account
 
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            // Add Encoding -> uncomment in ConfirmEmail Decoding
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
