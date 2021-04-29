@@ -22,6 +22,18 @@ namespace BulkyBook.Utility
         // Session Name
         public const string ssShoppingCart = "Shopping Cart Session";
 
+        // Order status
+        public const string StatusPending = "Pending";
+        public const string StatusApproved = "Approved";
+        public const string StatusInProcess = "Processing";
+        public const string StatusShipped = "Shipped";
+        public const string StatusCancelled = "Cancelled";
+        public const string StatusRefunded = "Refunded";
+        // Payment status
+        public const string PaymentStatusPending = "Pending";
+        public const string PaymentStatusApproved = "Approved";
+        public const string PaymentStatusDelayedPayment = "ApprovedForDelayedPayment";
+        public const string PaymentStatusRejected = "Rejected";
 
         public static double GetPriceBasedOnQuantity(double quantity, double price, double price50, double price100)
         {
