@@ -24,6 +24,7 @@ namespace BulkyBook.Areas.Customer.Controllers
         private readonly IEmailSender _emailSender;
         private readonly UserManager<IdentityUser> _userManager;
 
+        [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
 
         public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<IdentityUser> userManager)
@@ -163,6 +164,10 @@ namespace BulkyBook.Areas.Customer.Controllers
             List<OrderDetails> orderDetailsList = new List<OrderDetails>();
             foreach (var item in ShoppingCartVM.ListCart)
             {
+                // calculate Price
+                item.Price = SD.GetPriceBasedOnQuantity(item.Count, item.Product.Price,
+                    item.Product.Price50, item.Product.Price100);
+
                 OrderDetails orderDetails = new OrderDetails()
                 {
                     ProductId = item.ProductId,
@@ -175,11 +180,19 @@ namespace BulkyBook.Areas.Customer.Controllers
                 _unitOfWork.Save();
             }
 
+            // remove from shopping cart and from session (for Home/Index view)
             _unitOfWork.ShoppingCart.RemoveRange(ShoppingCartVM.ListCart);
+            _unitOfWork.Save();
             HttpContext.Session.SetInt32(SD.ssShoppingCart, 0);
 
             return RedirectToAction("OrderConfirmation", "Cart", new { id = ShoppingCartVM.OrderHeader.Id });
+        }
 
+        public IActionResult OrderConfirmation(int id)
+        {
+            // if we want to display everything from order
+            // we can get OrderHeader and OrderDetails from id
+            return View(id);
         }
 
 
