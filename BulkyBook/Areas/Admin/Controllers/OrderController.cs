@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BulkyBook.Areas.Admin.Controllers
@@ -31,6 +32,8 @@ namespace BulkyBook.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetOrderList()
         {
+            var claimsIdentity = ClaimsIdentity
+
             IEnumerable<OrderHeader> orderHeaderList;
 
             orderHeaderList = _unitOfWork.OrderHeader.GetAll(includeProperties: "ApplicationUser");
