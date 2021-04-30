@@ -31,11 +31,17 @@ namespace BulkyBook.Models
         public string TransactionId { get; set; }
 
         // Shippment details
+        [Required]
         public string PhoneNumber { get; set; }
+        [Required]
         public string StreetAddress { get; set; }
+        [Required]
         public string City { get; set; }
+        [Required]
         public string State { get; set; }
+        [Required]
         public string PostalCode { get; set; }
+        [Required]
         public string Name { get; set; }
     }
 }
