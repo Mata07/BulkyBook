@@ -107,7 +107,11 @@
 
                             @{ // Convert OrderTotal to cents from dollars, Stripe works with cents
                                             var OrderTotalForStripe = Model.OrderHeader.OrderTotal * 100; }
-                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                            @*Check if user is not AuthorizedCompany - they can place order without payment*@
+                            @if (Model.OrderHeader.ApplicationUser.Company == null ||
+                             !Model.OrderHeader.ApplicationUser.Company.IsAuthorizedCompany)
+                            {
+                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                     data-key="@Stripe.Value.PublishableKey"
                                     data-amount="@OrderTotalForStripe"
                                     data-name="Bulky Book"
@@ -115,12 +119,18 @@
                                     data-description="Get Books, For Less"
                                     data-locale="auto"
                                     data-allow-remember-me="false"
-                                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"></script>
-                            @*Any button on page acts like Stripe button so hide this one*@
-                            <script>
-                                document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
-                            </script>
-                            <button type="submit" value="Place Order" class="btn btn-success form-control">Place Order</button>
+                                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png">
+                                </script> 
+                                @*Any button on page acts like Stripe button so hide this one*@
+                                <script>
+                                    document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+                                </script>
+                                <button type="submit" value="Place Order" class="btn btn-success form-control">Place Order</button>
+                             }
+                             else
+                             {
+                                <button type="submit" value="Place Order" class="btn btn-primary form-control">Place Order</button>
+                             }
                         </div>
                     </div>
                 </div>
