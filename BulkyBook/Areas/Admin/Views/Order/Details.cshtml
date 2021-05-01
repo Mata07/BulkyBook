@@ -1,12 +1,15 @@
 ﻿@model BulkyBook.Models.ViewModels.OrderDetailsVM
 @using BulkyBook.Utility
+@using Microsoft.Extensions.Options
+
+@inject IOptions<BulkyBook.Utility.StripeSettings> Stripe
 
 @{ // to set readonly fields (my implementation for OrderHeader.Name)
     var isReadonly = "";
     if (!User.IsInRole(SD.Role_Employee) || !User.IsInRole(SD.Role_Admin))
     {
         isReadonly = "readonly";
-    } 
+    }
 }
 
 <form method="post">
@@ -34,9 +37,9 @@
                             <div class="row my-1">
                                 <div class="col-3">Name</div>
                                 <div class="col-9">
-                                   
-                                        <input asp-for="OrderHeader.Name" type="text" class="form-control" readonly="@isReadonly"/>
-                                    
+
+                                    <input asp-for="OrderHeader.Name" type="text" class="form-control" readonly="@isReadonly" />
+
 
                                 </div>
                             </div>
@@ -246,10 +249,32 @@
                                 <label class="btn btn-primary form-control">@Model.OrderHeader.OrderStatus</label>
                             }
 
+                            @{
+                                var OrderTotalForStripe = Model.OrderHeader.OrderTotal * 100;
+                            }
+
+                            @if (Model.OrderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment &&
+                             Model.OrderHeader.OrderStatus == SD.StatusShipped)
+                            {
+                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                        data-key="@Stripe.Value.PublishableKey"
+                                        data-amount="@OrderTotalForStripe"
+                                        data-name="Bulky Book"
+                                        data-label="Place Order"
+                                        data-description="Get Books, For Less"
+                                        data-locale="auto"
+                                        data-allow-remember-me="false"
+                                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png">
+                                </script>
+                                <script>
+                                    document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+                                </script>
+                                <button type="submit" value="Place Order" class="btn btn-success form-control">Pay Now</button>
+                            }
 
                             @if (Model.OrderHeader.OrderStatus != SD.StatusRefunded &&
-                           Model.OrderHeader.OrderStatus != SD.StatusCancelled &&
-                           (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee)))
+                         Model.OrderHeader.OrderStatus != SD.StatusCancelled &&
+                         (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee)))
                             {
                                 <div class="pt-2">
                                     <a asp-action="CancelOrder" asp-route-id="@Model.OrderHeader.Id"
