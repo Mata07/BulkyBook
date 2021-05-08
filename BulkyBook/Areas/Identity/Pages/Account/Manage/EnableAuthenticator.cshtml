@@ -50,4 +50,18 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    @*1. QRCode generator script to enable Two Factor Authentication
+      2. In Manage Account in App setup TFA
+      3. Download Google or Microsoft TFA app
+        *@
+    <script type="text/javascript" src="~/js/qrcode.js"></script>
+    <script type="text/javascript">
+        new QRCode(document.getElementById("qrCode"),
+            {
+                text: "@Html.Raw(Model.AuthenticatorUri)",
+                width: 150,
+                height: 150
+            });
+    </script>
 }
