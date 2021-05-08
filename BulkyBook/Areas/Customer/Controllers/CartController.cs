@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using Stripe;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace BulkyBook.Areas.Customer.Controllers
 {
@@ -25,14 +28,19 @@ namespace BulkyBook.Areas.Customer.Controllers
         private readonly IEmailSender _emailSender;
         private readonly UserManager<IdentityUser> _userManager;
 
+        // Add for Twilio SMS
+        private TwilioSettings _twilioOptions { get; set; }
+
         [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
 
-        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<IdentityUser> userManager)
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender,
+                UserManager<IdentityUser> userManager, IOptions<TwilioSettings> twilioOptions)
         {
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
             _userManager = userManager;
+            _twilioOptions = twilioOptions.Value;
         }
 
         public IActionResult Index()
@@ -232,6 +240,22 @@ namespace BulkyBook.Areas.Customer.Controllers
 
         public IActionResult OrderConfirmation(int id)
         {
+            // Setup for Twilio SMS - does not work, Twilio changed settings
+            //OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id);
+            //TwilioClient.Init(_twilioOptions.AccountSid, _twilioOptions.AuthToken);
+            //try
+            //{
+            //    var message = MessageResource.Create(
+            //        body: "Order Placed on Bulky Book. Your Order ID: " + id,
+            //        from: new Twilio.Types.PhoneNumber(_twilioOptions.PhoneNumber),
+            //        to: new Twilio.Types.PhoneNumber(orderHeader.PhoneNumber)
+            //        );
+            //}
+            //catch (Exception ex)
+            //{
+            //    String.Format("Wrong Phone Number. More Details: {0}", ex.Message );
+            //}
+
             // if we want to display everything from order
             // we can get OrderHeader and OrderDetails from id
             return View(id);

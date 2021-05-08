@@ -46,6 +46,8 @@ namespace BulkyBook
 
             // Add Stripe
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
+            // Add Twilio SMS
+            services.Configure<TwilioSettings>(Configuration.GetSection("Twilio"));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
