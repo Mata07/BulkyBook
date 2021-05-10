@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BulkyBook.DataAccess.Repository
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class CategoryRepository : RepositoryAsync<Category>, ICategoryRepository
     {
         private readonly ApplicationDbContext _db;
 
@@ -23,9 +23,7 @@ namespace BulkyBook.DataAccess.Repository
             var objFromDb = _db.Categories.FirstOrDefault(s => s.Id == category.Id);
             if (objFromDb != null)
             {
-                objFromDb.Name = category.Name;
-                // later implement Save in UnitOfWork - to _unitOfWork.Save();
-                // _db.SaveChanges();
+                objFromDb.Name = category.Name;                
             }            
         }
     }
