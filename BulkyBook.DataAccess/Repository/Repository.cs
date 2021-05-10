@@ -32,6 +32,11 @@ namespace BulkyBook.DataAccess.Repository
             return dbSet.Find(id);
         }
 
+        // to pass filter - o => o.OrderId == id, 
+        // to pass orderBy - orderBy: query => query.OrderByDescending(o => o.Name)
+        // to pass includeProperites - includeProperties: "Product"
+        // GetAll(o => o.OrderId == id, query => query.OrderByDescending(o => o.Name), includeProperties: "Product")
+
         public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null)
         {
             IQueryable<T> query = dbSet;
