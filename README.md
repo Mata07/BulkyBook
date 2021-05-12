@@ -28,3 +28,7 @@ Plugins:
 - DataTables for Views
 - SweetAlerts
 - Stripe for Payments
+
+Course link: https://www.udemy.com/course/master-aspnet-core-3-advanced
+GitHub: https://github.com/bhrugen/BulkyBook
+Original App: https://bulkybook.azurewebsites.net/
