@@ -10,7 +10,7 @@ namespace BulkyBook.ViewComponents
 {
     // ViewComponents renders a chunk rather than a whole response
     // It is used for Layout or partial pages where we need to get something from the model
-    // or need some kind of bussines logic
+    // or need some kind of business logic
     // Naming: Add ViewComponent to name of class OR implements Microsoft.AspNetCore.Mvc.ViewComponent
     // 2. Create  Partial View in Views/Shared/Components/UserName - Default
     // 3. Consume in _LoginPartial - @await Component.InvokeAsync("UserName")
@@ -28,7 +28,7 @@ namespace BulkyBook.ViewComponents
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var userFromDb = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claims.Value);
+            var userFromDb =  _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claims.Value);
 
             return View(userFromDb);
         }
